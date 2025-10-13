@@ -1,23 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 body {
     font-family: 'Poppins', sans-serif;
-    text-align: center;
-    background-color: #f7f6f3;
+    background: linear-gradient(160deg, #f5f3ff, #e6e9ff);
     color: #333;
-    padding: 50px;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
+
+.container {
+    padding: 50px 20px;
+}
+
 h1 {
     color: #5c4df2;
+    font-size: 2.5em;
 }
-.playlist button {
-    background: #5c4df2;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 8px;
+
+p {
+    color: #555;
+    max-width: 500px;
+    margin: 10px auto 40px;
+}
+
+.playlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    padding: 20px;
     cursor: pointer;
     transition: 0.3s;
 }
-.playlist button:hover {
-    background: #4a3dd1;
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.card h3 {
+    color: #5c4df2;
+    margin: 10px 0 5px;
+}
+
+.card p {
+    font-size: 0.9em;
+    color: #777;
 }
