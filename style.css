@@ -1,0 +1,23 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background-color: #f7f6f3;
+    color: #333;
+    padding: 50px;
+}
+h1 {
+    color: #5c4df2;
+}
+.playlist button {
+    background: #5c4df2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.playlist button:hover {
+    background: #4a3dd1;
+}
