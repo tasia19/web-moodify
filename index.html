@@ -7,12 +7,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>🎧 Moodify</h1>
-    <p>Pilih suasana hatimu dan dengarkan playlist yang cocok!</p>
-    <div class="playlist">
-        <button onclick="window.open('https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0')">Calm Mood</button>
-        <button onclick="window.open('https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0')">Focus Mode</button>
-        <button onclick="window.open('https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6a')">Feel Good</button>
+    <div class="container">
+        <h1>🎧 Moodify</h1>
+        <p>Pilih suasana hatimu, dan dengarkan playlist yang menenangkan jiwamu.</p>
+
+        <div class="playlist-grid">
+            <div class="card" onclick="window.open('https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0')">
+                <img src="https://i.scdn.co/image/ab67706f00000002c44b8c6eafdfd478cb73aa4f" alt="Calm Mood">
+                <h3>🌿 Calm Mood</h3>
+                <p>Musik lembut untuk meredakan pikiran.</p>
+            </div>
+
+            <div class="card" onclick="window.open('https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6a')">
+                <img src="https://i.scdn.co/image/ab67706f00000002c8412a3f2b3a9cb715d5c547" alt="Focus Mode">
+                <h3>🧠 Focus Mode</h3>
+                <p>Irama lembut agar tetap fokus dan produktif.</p>
+            </div>
+
+            <div class="card" onclick="window.open('https://open.spotify.com/playlist/37i9dQZF1DX0UrRvztWcAU')">
+                <img src="https://i.scdn.co/image/ab67706f00000002b23b9ec6b2e7a4933a4a0f8a" alt="Feel Good">
+                <h3>🌈 Feel Good</h3>
+                <p>Vibes ceria untuk meningkatkan mood!</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
+
