@@ -52,6 +52,7 @@ p {
     gap: 20px;
     max-width: 900px;
     margin: auto;
+    align-items: stretch;
 }
 
 /* ==== CARD ==== */
@@ -73,7 +74,8 @@ p {
 }
 
 .card img, .playlist-card img {
-    width: 100%;
+    width: 100%
+    object-fit: cover;
     border-radius: 12px;
 }
 
@@ -86,6 +88,26 @@ p {
 .card p, .playlist-card p {
     font-size: 0.9em;
     color: #eaeaea;
+}
+
+.card.calm {
+    background: linear-gradient(145deg, rgba(200, 247, 220, 0.3), rgba(168, 230, 207, 0.2));
+    border: 1px solid rgba(46, 204, 113, 0.4);
+}
+
+.card.focus {
+    background: linear-gradient(145deg, rgba(78, 84, 200, 0.35), rgba(143, 148, 251, 0.25));
+    border: 1px solid rgba(52, 152, 219, 0.4);
+}
+
+.card.happy {
+    background: linear-gradient(145deg, rgba(255, 241, 118, 0.35), rgba(255, 182, 185, 0.25));
+    border: 1px solid rgba(255, 193, 7, 0.5);
+}
+
+.card.angry {
+    background: linear-gradient(145deg, rgba(255, 111, 97, 0.4), rgba(255, 60, 60, 0.25));
+    border: 1px solid rgba(231, 76, 60, 0.5);
 }
 
 /* ==== LINK STYLE ==== */
@@ -103,6 +125,22 @@ p {
 
 .card a:hover, .playlist-card a:hover {
     background-color: #6b59ff;
+}
+
+.card.calm:hover {
+    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.5);
+}
+
+.card.focus:hover {
+    box-shadow: 0 10px 25px rgba(52, 152, 219, 0.5);
+}
+
+.card.happy:hover {
+    box-shadow: 0 10px 25px rgba(255, 193, 7, 0.5);
+}
+
+.card.angry:hover {
+    box-shadow: 0 10px 25px rgba(231, 76, 60, 0.5);
 }
 
 /* ==== ANIMATIONS ==== */
