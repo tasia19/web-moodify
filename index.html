@@ -4,7 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moodify | Bilik Me Time</title>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- STYLE FIX LANGSUNG DI DALAM FILE SUPAYA PASTI BERFUNGSI -->
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            text-align: center;
+            color: white;
+        }
+
+        /* Background Video */
+        #bg-video {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(60%);
+        }
+
+        .container {
+            padding: 60px 20px;
+            max-width: 1300px;
+            margin: auto;
+        }
+
+        /* === GRID CARD 4 KOLOM === */
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .playlist-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .playlist-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* === CARD === */
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 25px;
+            border-radius: 18px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+        }
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+        }
+        .card h3 {
+            margin-top: 15px;
+            font-size: 1.2em;
+        }
+
+        /* === CARD COLORS === */
+        .calm { background: rgba(120,200,180,0.25); }
+        .sad { background: rgba(130,150,230,0.28); }
+        .happy { background: rgba(255,200,150,0.28); }
+        .angry { background: rgba(230,100,90,0.32); }
+
+        /* Mood Box */
+        .mood-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            font-size: 1.3em;
+            transition: 0.4s;
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        #player {
+            margin-top: 40px;
+        }
+
+        /* Partikel */
+        #particleContainer {
+            position: relative;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,10 +147,10 @@
 
         </div>
 
-        <!-- PLAYER (WAJIB ADA UNTUK SPOTIFY) -->
+        <!-- PLAYER -->
         <div id="player"></div>
 
-        <!-- MOOD GENERATOR -->
+        <!-- GENERATOR -->
         <div class="mood-generator">
             <h2>🔮 Mood Decision Generator</h2>
             <p>Pilih mood kamu → klik tombol → dapatkan pesan khusus ✨</p>
@@ -76,10 +175,9 @@
 
     </div>
 
-
     <!-- JAVASCRIPT -->
     <script>
-        /* ==== MOOD MESSAGES ==== */
+        /* Mood Messages */
         const messages = {
             calm: [
                 "Take a deep breath.",
@@ -103,36 +201,35 @@
             ]
         };
 
-        /* ==== SET MOOD + PLAY SPOTIFY ==== */
+        /* Pilih kartu → set mood */
         function setMood(mood) {
             document.getElementById("moodSelect").value = mood;
             playMusic(mood);
         }
 
+        /* PLAY MUSIC */
         function playMusic(mood) {
             const player = document.getElementById("player");
             let playlistURL = "";
 
             if (mood === "calm") {
                 playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0";
-            }
-            else if (mood === "sad") {
+            } else if (mood === "sad") {
                 playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1";
-            }
-            else if (mood === "happy") {
+            } else if (mood === "happy") {
                 playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC";
-            }
-            else if (mood === "angry") {
+            } else if (mood === "angry") {
                 playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh";
             }
 
             player.innerHTML = `
-                <iframe src="${playlistURL}" width="100%" height="380" frameborder="0"
-                allow="encrypted-media"></iframe>
+                <iframe style="border-radius:12px"
+                src="${playlistURL}" width="100%" height="380"
+                frameborder="0" allow="encrypted-media"></iframe>
             `;
         }
 
-        /* ==== MOOD MESSAGE GENERATOR ==== */
+        /* MOOD GENERATOR */
         function generateMoodMessage() {
             const mood = document.getElementById("moodSelect").value;
             const box = document.getElementById("moodMessageBox");
@@ -141,6 +238,14 @@
             const randomMsg = messages[mood][Math.floor(Math.random() * messages[mood].length)];
 
             box.classList.add("hidden");
+
             setTimeout(() => {
                 box.innerHTML = randomMsg;
                 box.classList.remove("hidden");
+                ding.play();
+            }, 350);
+        }
+    </script>
+
+</body>
+</html>
