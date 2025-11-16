@@ -6,16 +6,22 @@
     <title>Moodify | Bilik Me Time</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+    <!-- Background Video -->
     <video autoplay muted loop id="bg-video">
         <source src="backgroundweb.mp4" type="video/mp4">
+        Browser kamu tidak mendukung video tag.
     </video>
 
     <div class="container">
         <h1>🎧 Moodify</h1>
         <p>Pilih suasana hatimu, dan dengarkan playlist yang menenangkan jiwamu.</p>
 
+        <!-- PLAYLIST GRID -->
         <div class="playlist-grid">
+
             <div class="card" onclick="setMood('calm')">
                 <img src="calm.png" alt="Calm Mood">
                 <h3>🌿 Calm Mood</h3>
@@ -23,30 +29,116 @@
                 <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
 
-            <div class="card" onclick="setMood('blue')">
-                <img src="blue.png" alt="Focus Mode">
+            <div class="card" onclick="setMood('sad')">
+                <img src="blue.png" alt="Feeling Blue">
                 <h3>💧 Feeling Blue</h3>
-                <p>Irama lembut agar tetap fokus dan produktif.</p>
+                <p>Irama lembut yang menemani suasana hati sendu.</p>
                 <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
 
             <div class="card" onclick="setMood('happy')">
-                <img src="happy.png" alt="Feel Good">
+                <img src="happy.png" alt="Happy Mood">
                 <h3>🌈 Happy Mood</h3>
                 <p>Vibes ceria untuk meningkatkan mood!</p>
                 <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
-                
+
             <div class="card" onclick="setMood('angry')">
                 <img src="angry.png" alt="Angry Energy">
                 <h3>🔥 Angry Energy</h3>
-                <p>Musik penuh energi untuk menyalurkan kemarahan dan melepaskan stres.</p>
+                <p>Musik penuh energi untuk menyalurkan kemarahan.</p>
                 <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
 
-            </div>
         </div>
+
+        <!-- M O O D • G E N E R A T O R -->
+        <div class="mood-generator">
+            <h2>🔮 Mood Decision Generator</h2>
+            <p>Pilih mood kamu → klik tombol → dapatkan pesan khusus ✨</p>
+
+            <select id="moodSelect">
+                <option value="calm">🌿 Calm</option>
+                <option value="happy">🌈 Happy</option>
+                <option value="sad">😢 Sad</option>
+                <option value="angry">🔥 Angry</option>
+            </select>
+
+            <button onclick="generateMoodMessage()">Dapatkan Pesan</button>
+
+            <div id="moodMessageBox" class="mood-box hidden"></div>
+
+            <!-- Partikel -->
+            <div id="particleContainer"></div>
+
+            <!-- Suara ding -->
+            <audio id="dingSound" src="ding.mp3" preload="auto"></audio>
+        </div>
+
     </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Pesan per mood
+        const messages = {
+            calm: [
+                "Take a deep breath.",
+                "Peace begins with one inhale.",
+                "You're allowed to rest."
+            ],
+            happy: [
+                "Keep shining!",
+                "Your smile changes the room.",
+                "Today is your day!"
+            ],
+            sad: [
+                "It's okay to feel this way.",
+                "Be gentle with yourself.",
+                "You’re not alone."
+            ],
+            angry: [
+                "Release it. Don’t hold it inside.",
+                "Your feelings are valid.",
+                "Breathe. Everything will pass."
+            ]
+        };
+
+        function setMood(mood) {
+            document.getElementById("moodSelect").value = mood;
+        }
+
+        function generateMoodMessage() {
+            const mood = document.getElementById("moodSelect").value;
+            const box = document.getElementById("moodMessageBox");
+            const ding = document.getElementById("dingSound");
+
+            const randomMsg = messages[mood][Math.floor(Math.random() * messages[mood].length)];
+
+            box.classList.add("hidden");
+            setTimeout(() => {
+                box.innerHTML = randomMsg;
+                box.classList.remove("hidden");
+
+                ding.play();
+                spawnParticles();
+            }, 300);
+        }
+
+        function spawnParticles() {
+            const container = document.getElementById("particleContainer");
+
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement("div");
+                p.classList.add("particle");
+                p.style.left = Math.random() * 100 + "%";
+                p.style.top = "60%";
+                container.appendChild(p);
+
+                setTimeout(() => p.remove(), 1500);
+            }
+        }
+    </script>
+
 </body>
 </html>
 
