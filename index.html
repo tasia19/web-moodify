@@ -22,37 +22,36 @@
         <!-- PLAYLIST GRID -->
         <div class="playlist-grid">
 
-            <div class="card" onclick="setMood('calm')">
+            <div class="card calm" onclick="setMood('calm')">
                 <img src="calm.png" alt="Calm Mood">
                 <h3>🌿 Calm Mood</h3>
                 <p>Musik lembut untuk meredakan pikiran.</p>
-                <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
 
-            <div class="card" onclick="setMood('sad')">
+            <div class="card sad" onclick="setMood('sad')">
                 <img src="blue.png" alt="Feeling Blue">
                 <h3>💧 Feeling Blue</h3>
                 <p>Irama lembut yang menemani suasana hati sendu.</p>
-                <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
 
-            <div class="card" onclick="setMood('happy')">
+            <div class="card happy" onclick="setMood('happy')">
                 <img src="happy.png" alt="Happy Mood">
                 <h3>🌈 Happy Mood</h3>
                 <p>Vibes ceria untuk meningkatkan mood!</p>
-                <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
 
-            <div class="card" onclick="setMood('angry')">
+            <div class="card angry" onclick="setMood('angry')">
                 <img src="angry.png" alt="Angry Energy">
                 <h3>🔥 Angry Energy</h3>
                 <p>Musik penuh energi untuk menyalurkan kemarahan.</p>
-                <a href="https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0" target="_blank">Dengarkan</a>
             </div>
 
         </div>
 
-        <!-- M O O D • G E N E R A T O R -->
+        <!-- PLAYER (WAJIB ADA UNTUK SPOTIFY) -->
+        <div id="player"></div>
+
+        <!-- MOOD GENERATOR -->
         <div class="mood-generator">
             <h2>🔮 Mood Decision Generator</h2>
             <p>Pilih mood kamu → klik tombol → dapatkan pesan khusus ✨</p>
@@ -77,9 +76,10 @@
 
     </div>
 
+
     <!-- JAVASCRIPT -->
     <script>
-        // Pesan per mood
+        /* ==== MOOD MESSAGES ==== */
         const messages = {
             calm: [
                 "Take a deep breath.",
@@ -103,10 +103,36 @@
             ]
         };
 
+        /* ==== SET MOOD + PLAY SPOTIFY ==== */
         function setMood(mood) {
             document.getElementById("moodSelect").value = mood;
+            playMusic(mood);
         }
 
+        function playMusic(mood) {
+            const player = document.getElementById("player");
+            let playlistURL = "";
+
+            if (mood === "calm") {
+                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0";
+            }
+            else if (mood === "sad") {
+                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1";
+            }
+            else if (mood === "happy") {
+                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC";
+            }
+            else if (mood === "angry") {
+                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh";
+            }
+
+            player.innerHTML = `
+                <iframe src="${playlistURL}" width="100%" height="380" frameborder="0"
+                allow="encrypted-media"></iframe>
+            `;
+        }
+
+        /* ==== MOOD MESSAGE GENERATOR ==== */
         function generateMoodMessage() {
             const mood = document.getElementById("moodSelect").value;
             const box = document.getElementById("moodMessageBox");
@@ -118,27 +144,3 @@
             setTimeout(() => {
                 box.innerHTML = randomMsg;
                 box.classList.remove("hidden");
-
-                ding.play();
-                spawnParticles();
-            }, 300);
-        }
-
-        function spawnParticles() {
-            const container = document.getElementById("particleContainer");
-
-            for (let i = 0; i < 12; i++) {
-                const p = document.createElement("div");
-                p.classList.add("particle");
-                p.style.left = Math.random() * 100 + "%";
-                p.style.top = "60%";
-                container.appendChild(p);
-
-                setTimeout(() => p.remove(), 1500);
-            }
-        }
-    </script>
-
-</body>
-</html>
-
