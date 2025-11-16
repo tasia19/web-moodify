@@ -54,7 +54,7 @@ p {
 }
 
 /* ==== CARD ==== */
-.card, .playlist-card {
+.card {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
@@ -66,24 +66,24 @@ p {
     animation: fadeUp 1s ease both;
 }
 
-.card:hover, .playlist-card:hover {
+.card:hover {
     transform: translateY(-8px) scale(1.03);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
-.card img, .playlist-card img {
+.card img {
     width: 100%;
     height: 180px;
     object-fit: cover;
     border-radius: 12px;
 }
 
-.card h3, .playlist-card h3 {
+.card h3 {
     margin: 10px 0 5px;
     font-weight: 600;
 }
 
-.card p, .playlist-card p {
+.card p {
     font-size: 0.9em;
     color: #eaeaea;
 }
@@ -109,22 +109,98 @@ p {
     border: 1px solid rgba(231, 76, 60, 0.5);
 }
 
-/* ==== LINK STYLE ==== */
-.card a, .playlist-card a {
-    display: inline-block;
-    margin-top: 10px;
-    background-color: #5c4df2;
-    color: #fff;
-    padding: 8px 16px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-}
-
-.card a:hover {
-    background: #4a3de0;
+/* ==== PLAYER (Spotify Frame) ==== */
+#player {
+    margin: 40px auto;
+    max-width: 450px;
+    animation: fadeIn 1s ease-out;
 }
 
 /* ==== MOOD GENERATOR ==== */
-.mood-g
+.mood-generator {
+    margin-top: 60px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: fadeUp 1.2s ease;
+}
+
+.mood-generator select {
+    padding: 10px 15px;
+    font-size: 1em;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.mood-generator button {
+    background: #6c5ce7;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.mood-generator button:hover {
+    background: #5947d4;
+}
+
+/* ==== MOOD MESSAGE BOX ==== */
+.mood-box {
+    margin-top: 20px;
+    padding: 15px;
+    font-size: 1.2em;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+    transition: 0.3s;
+    animation: fadeUp 0.6s ease;
+}
+
+.hidden {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+/* ==== PARTICLES ==== */
+#particleContainer {
+    position: relative;
+    height: 0;
+    overflow: visible;
+}
+
+.particle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: white;
+    opacity: 0.8;
+    border-radius: 50%;
+    animation: floatUp 1.5s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-80px) scale(0.2); opacity: 0; }
+}
+
+/* ==== ANIMATIONS ==== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
