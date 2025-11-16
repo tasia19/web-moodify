@@ -33,14 +33,14 @@ body {
 /* ==== HEADER ==== */
 h1 {
     font-size: 2.8em;
-    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 3px 10px rgba(0,0,0,0.3);
 }
 
 p {
     max-width: 500px;
     margin: 10px auto 40px;
     font-size: 1em;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* ==== PLAYLIST GRID ==== */
@@ -55,20 +55,19 @@ p {
 
 /* ==== CARD ==== */
 .card {
-    background: rgba(255, 255, 255, 0.15);
     border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     padding: 20px;
     cursor: pointer;
     transition: 0.4s;
     backdrop-filter: blur(10px);
     color: #fff;
     animation: fadeUp 1s ease both;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }
 
 .card:hover {
     transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
 }
 
 .card img {
@@ -90,37 +89,37 @@ p {
 
 /* ==== CARD COLORS BY MOOD ==== */
 .card.calm {
-    background: linear-gradient(145deg, rgba(200, 247, 220, 0.35), rgba(168, 230, 207, 0.25));
-    border: 1px solid rgba(46, 204, 113, 0.5);
+    background: linear-gradient(145deg, rgba(200,247,220,0.35), rgba(168,230,207,0.25));
+    border: 1px solid rgba(46,204,113,0.5);
 }
 
 .card.sad {
-    background: linear-gradient(145deg, rgba(120, 150, 255, 0.35), rgba(100, 80, 200, 0.25));
-    border: 1px solid rgba(52, 152, 219, 0.5);
+    background: linear-gradient(145deg, rgba(120,150,255,0.35), rgba(100,80,200,0.25));
+    border: 1px solid rgba(52,152,219,0.5);
 }
 
 .card.happy {
-    background: linear-gradient(145deg, rgba(255, 241, 118, 0.35), rgba(255, 182, 185, 0.25));
-    border: 1px solid rgba(255, 193, 7, 0.5);
+    background: linear-gradient(145deg, rgba(255,241,118,0.35), rgba(255,182,185,0.25));
+    border: 1px solid rgba(255,193,7,0.5);
 }
 
 .card.angry {
-    background: linear-gradient(145deg, rgba(255, 111, 97, 0.45), rgba(255, 60, 60, 0.25));
-    border: 1px solid rgba(231, 76, 60, 0.5);
+    background: linear-gradient(145deg, rgba(255,111,97,0.45), rgba(255,60,60,0.25));
+    border: 1px solid rgba(231,76,60,0.5);
 }
 
-/* ==== PLAYER (Spotify Frame) ==== */
+/* ==== PLAYER ==== */
 #player {
     margin: 40px auto;
     max-width: 450px;
     animation: fadeIn 1s ease-out;
 }
 
-/* ==== MOOD GENERATOR ==== */
+/* ==== MOOD GENERATOR PANEL ==== */
 .mood-generator {
     margin-top: 60px;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255,255,255,0.15);
     backdrop-filter: blur(12px);
     border-radius: 18px;
     max-width: 500px;
@@ -160,7 +159,7 @@ p {
     padding: 15px;
     font-size: 1.2em;
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255,255,255,0.25);
     border-radius: 14px;
     backdrop-filter: blur(12px);
     transition: 0.3s;
