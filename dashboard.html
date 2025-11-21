@@ -1,77 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Dashboard Crowd Playlist – Moodify</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-    body {
-        margin: 0; padding: 0;
-        background: linear-gradient(135deg, #ffd6f6, #d9c7ff, #c6e6ff);
-        font-family: 'Poppins', sans-serif;
-        color: #333;
-    }
-    header {
-        text-align: center;
-        padding: 25px;
-        font-size: 28px;
-        font-weight: 600;
-        color: #5e2d79;
-    }
-    .container {
-        width: 90%;
-        max-width: 900px;
-        margin: 20px auto;
-    }
-    .song-card {
-        background: white;
-        padding: 18px 20px;
-        border-radius: 18px;
-        margin-bottom: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    .info {
-        line-height: 1.5;
-        font-size: 16px;
-    }
-    .mood-tag {
-        padding: 6px 12px;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: capitalize;
-        color: white;
-    }
-    .happy { background: #ffb84c; }
-    .calm { background: #88e6cd; }
-    .blue { background: #6ca8ff; }
-    .angry { background: #ff6b6b; }
-</style>
-</head>
-
-<body>
-<header>🎧 Crowd Playlist Dashboard – Moodify</header>
-
-<div class="container">
-    <div id="songList"></div>
-</div>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import {
-        getFirestore,
-        collection,
-        query,
-        orderBy,
-        onSnapshot
-    } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } 
+    from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDJYuLpI7flTzq44Rjuvp_-Uk-001fe4jM",
@@ -87,24 +17,86 @@
 
     const songList = document.getElementById("songList");
 
-    const q = query(collection(db, "crowdPlaylist"), orderBy("timestamp", "desc"));
+    /* ============================================
+       🔵 PIE CHART SETUP
+    ============================================== */
+
+    let moodChart;
+    const ctx = document.getElementById("moodPieChart").getContext("2d");
+
+    function updateMoodChart(moodCount) {
+        const labels = Object.keys(moodCount);
+        const values = Object.values(moodCount);
+
+        if (moodChart) moodChart.destroy();
+
+        moodChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        "#ffb6d9", // sad
+                        "#ffcf7d", // happy
+                        "#b7f7df", // calm
+                        "#a8c6ff", // blue
+                        "#ff8b8b"  // angry
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        labels: { color: "#333" }
+                    }
+                }
+            }
+        });
+    }
+
+    /* ============================================
+       🔴 REAL TIME PLAYLIST + PIE CHART
+    ============================================== */
+
+    const q = query(collection(db, "playlist"), orderBy("time", "desc"));
+
     onSnapshot(q, (snapshot) => {
-        songList.innerHTML = "";
+        songList.innerHTML = ""; 
+
+        let moodCount = {
+            sad: 0,
+            happy: 0,
+            calm: 0,
+            blue: 0,
+            angry: 0
+        };
+
         snapshot.forEach((doc) => {
             const song = doc.data();
-            songList.innerHTML += `
+            const mood = song.mood?.toLowerCase();
+
+            if (moodCount[mood] !== undefined) {
+                moodCount[mood]++;
+            }
+
+            const card = `
                 <div class="song-card">
                     <div class="info">
                         <strong>${song.title}</strong><br>
                         <span>${song.artist}</span>
                     </div>
-                    <div class="mood-tag ${song.mood}">
-                        ${song.mood}
+                    <div class="mood-tag ${mood}">
+                        ${mood}
                     </div>
-                </div>`;
-        });
-    });
-</script>
+                </div>
+            `;
 
-</body>
-</html>
+            songList.innerHTML += card;
+        });
+
+        updateMoodChart(moodCount);
+    });
+
+</script>
