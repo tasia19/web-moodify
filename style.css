@@ -211,3 +211,42 @@ p {
     from { opacity: 0; transform: translateY(25px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* --- MOOD BUBBLE (iMessage Style) --- */
+
+#bubbleContainer {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bubble {
+    padding: 14px 18px;
+    border-radius: 18px;
+    max-width: 70%;
+    width: fit-content;
+    font-size: 16px;
+    line-height: 1.4;
+    animation: fadeIn 0.35s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.bubble.ai {
+    background: #ffffff;
+    border: 1px solid #f1d9ff;
+    align-self: flex-start;
+}
+
+.bubble.user {
+    background: #d9c7ff;
+    color: #4a2e6f;
+    align-self: flex-end;
+}
+
+.bubble .label {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+
