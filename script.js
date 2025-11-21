@@ -45,28 +45,71 @@ function playMusic(mood) {
 function showMoodMessage(mood) {
     const messageBox = document.getElementById("mood-message");
 
-    const messages = {
-        calm: [
-            "Take a deep breath 🌿",
-            "You are safe. You are here.",
-            "Slow down, everything is okay."
-        ],
-        sad: [
-            "It's okay to feel sad 💙",
-            "Be kind to yourself today.",
-            "You are stronger than you think."
-        ],
+    /* ------------------ MOOD BUBBLE MESSAGE ------------------ */
+
+function moodMessage(mood) {
+    const pesan = {
         happy: [
-            "Shine bright today! 🌈",
-            "Keep spreading your joy.",
-            "Your smile is powerful!"
+            "Kamu terlihat ceria hari ini! 😊 Semoga energi baikmu menular ke semua hal yang kamu lakukan!",
+            "Hari ini penuh warna! Terus sebarkan kebaikan ya ✨"
+        ],
+        calm: [
+            "Tenang itu bukan lemah, tapi bentuk kekuatan. Kamu hebat 🤍",
+            "Ketenanganmu hari ini membuat segalanya terasa lebih ringan."
+        ],
+        blue: [
+            "Tidak apa-apa merasa sedih. Istirahat sebentar, kamu tidak sendirian 💙",
+            "Perasaanmu valid. Pelan-pelan ya, kamu akan baik-baik saja."
         ],
         angry: [
-            "It's okay to feel anger 🔥",
-            "Take a breath before you react.",
-            "Use your energy wisely."
+            "Tarik napas sebentar… kamu butuh ruang untuk diri sendiri. Kamu kuat ❤️‍🔥",
+            "Emosi itu wajar. Yang penting kamu tidak memendam semuanya sendirian."
         ]
     };
+
+    const list = pesan[mood] || ["Bagaimana pun perasaanmu, kamu tetap berharga."];
+
+    return list[Math.floor(Math.random() * list.length)];
+}
+
+/* ------------------ BUBBLE RENDER ------------------ */
+
+function addBubble(type, text) {
+    const wrap = document.getElementById("bubbleContainer");
+
+    const bubble = document.createElement("div");
+    bubble.className = `bubble ${type}`;
+    bubble.innerHTML = `
+        <div class="label">${type === "user" ? "Mood kamu" : "Pesan untukmu"}</div>
+        ${text}
+    `;
+
+    wrap.appendChild(bubble);
+
+    // auto scroll ke bawah
+    wrap.scrollTop = wrap.scrollHeight;
+}
+
+/* ------------------ BUTTON EVENT ------------------ */
+
+document.getElementById("generateButton").addEventListener("click", () => {
+    const selectedMood = document.querySelector("input[name='mood']:checked");
+
+    if (!selectedMood) {
+        alert("Pilih mood dulu ya 😊");
+        return;
+    }
+
+    const mood = selectedMood.value;
+
+    // tampilkan bubble user
+    addBubble("user", mood);
+
+    // tampilkan bubble mood message
+    const pesan = moodMessage(mood);
+    setTimeout(() => addBubble("ai", pesan), 500);
+});
+
 
     const list = messages[mood];
     const randomMsg = list[Math.floor(Math.random() * list.length)];
@@ -94,7 +137,7 @@ function playDingSound() {
 function spawnParticles(mood) {
     const colors = {
         calm: "#98e6d8",
-        sad: "#6bb6ff",
+        blue: "#6bb6ff",
         happy: "#ffe066",
         angry: "#ff5959"
     };
