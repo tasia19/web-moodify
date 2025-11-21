@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moodify | Bilik Me Time</title>
 
-    <!-- STYLE FIX LANGSUNG DI DALAM FILE SUPAYA PASTI BERFUNGSI -->
+    <!-- ===== BASE STYLE KAMU ===== -->
     <style>
         body {
             margin: 0;
@@ -39,7 +39,6 @@
             margin-top: 40px;
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1100px) {
             .playlist-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -63,17 +62,19 @@
         .card:hover {
             transform: translateY(-8px) scale(1.03);
         }
+
         .card img {
             width: 100%;
             height: 150px;
             object-fit: contain;
         }
+
         .card h3 {
             margin-top: 15px;
             font-size: 1.2em;
         }
 
-        /* === CARD COLORS === */
+        /* Color Cards */
         .calm { background: rgba(120,200,180,0.25); }
         .sad { background: rgba(130,150,230,0.28); }
         .happy { background: rgba(255,200,150,0.28); }
@@ -99,19 +100,115 @@
             margin-top: 40px;
         }
 
-        /* Partikel */
         #particleContainer {
             position: relative;
+        }
+
+
+        /* ============================================================
+           ===  SECTION MENTIMETER — SPOTIFY WRAPPED STYLE  ============
+           ============================================================ */
+
+        #wrapped-menti {
+            margin-top: 120px;
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            overflow: hidden;
+            color: white;
+        }
+
+        #wrapped-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            filter: brightness(0.55) saturate(1.05);
+        }
+
+        .menti-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(120deg, rgba(100,80,255,0.18), rgba(255,120,160,0.15));
+        }
+
+        .menti-inner {
+            position: relative;
+            z-index: 3;
+            max-width: 1200px;
+            margin: auto;
+            padding: 70px 25px;
+            text-align: center;
+        }
+
+        .menti-inner h1 {
+            font-size: clamp(28px, 4.2vw, 56px);
+            background: linear-gradient(90deg,#f8e7ff,#ffd9e9 60%);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .menti-row {
+           display: grid;
+           grid-template-columns: 1fr 400px;
+           gap: 30px;
+           margin-top: 50px;
+        }
+
+        @media(max-width: 950px){
+           .menti-row {
+               grid-template-columns: 1fr;
+           }
+        }
+
+        .menti-frame {
+            width: 100%;
+            height: 380px;
+            background: rgba(255,255,255,0.18);
+            backdrop-filter: blur(8px);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .menti-frame iframe {
+            width: 100%; height: 100%;
+            border: none;
+        }
+
+        .menti-feed {
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            height: 380px;
+            overflow-y: auto;
+        }
+
+        .feed-item {
+            background: rgba(255,255,255,0.12);
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-align: left;
+            animation: fadeIn .7s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity:0; transform: translateY(5px); }
+            to { opacity:1; transform:none; }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Background Video -->
+    <!-- BACKGROUND VIDEO -->
     <video autoplay muted loop id="bg-video">
         <source src="backgroundweb.mp4" type="video/mp4">
-        Browser kamu tidak mendukung video tag.
     </video>
 
     <div class="container">
@@ -120,31 +217,21 @@
 
         <!-- PLAYLIST GRID -->
         <div class="playlist-grid">
-
             <div class="card calm" onclick="setMood('calm')">
-                <img src="calm.png" alt="Calm Mood">
-                <h3>🌿 Calm Mood</h3>
-                <p>Musik lembut untuk meredakan pikiran.</p>
+                <img src="calm.png"><h3>🌿 Calm Mood</h3><p>Musik lembut.</p>
             </div>
 
             <div class="card sad" onclick="setMood('sad')">
-                <img src="blue.png" alt="Feeling Blue">
-                <h3>💧 Feeling Blue</h3>
-                <p>Irama lembut yang menemani suasana hati sendu.</p>
+                <img src="blue.png"><h3>💧 Feeling Blue</h3><p>Irama sendu.</p>
             </div>
 
             <div class="card happy" onclick="setMood('happy')">
-                <img src="happy.png" alt="Happy Mood">
-                <h3>🌈 Happy Mood</h3>
-                <p>Vibes ceria untuk meningkatkan mood!</p>
+                <img src="happy.png"><h3>🌈 Happy Mood</h3><p>Vibes ceria!</p>
             </div>
 
             <div class="card angry" onclick="setMood('angry')">
-                <img src="angry.png" alt="Angry Energy">
-                <h3>🔥 Angry Energy</h3>
-                <p>Musik penuh energi untuk menyalurkan kemarahan.</p>
+                <img src="angry.png"><h3>🔥 Angry Energy</h3><p>Energi penuh.</p>
             </div>
-
         </div>
 
         <!-- PLAYER -->
@@ -153,97 +240,94 @@
         <!-- GENERATOR -->
         <div class="mood-generator">
             <h2>🔮 Mood Decision Generator</h2>
-            <p>Pilih mood kamu → klik tombol → dapatkan pesan khusus ✨</p>
-
             <select id="moodSelect">
-                <option value="calm">🌿 Calm</option>
-                <option value="happy">🌈 Happy</option>
-                <option value="sad">😢 Sad</option>
-                <option value="angry">🔥 Angry</option>
+                <option value="calm">Calm</option>
+                <option value="happy">Happy</option>
+                <option value="sad">Sad</option>
+                <option value="angry">Angry</option>
             </select>
-
             <button onclick="generateMoodMessage()">Dapatkan Pesan</button>
-
             <div id="moodMessageBox" class="mood-box hidden"></div>
-
-            <!-- Partikel -->
             <div id="particleContainer"></div>
-
-            <!-- Suara ding -->
-            <audio id="dingSound" src="ding.mp3" preload="auto"></audio>
+            <audio id="dingSound" src="ding.mp3"></audio>
         </div>
-
     </div>
 
-    <!-- JAVASCRIPT -->
+
+    <!-- ============================================================
+           ===   SECTION MENTIMETER WRAPPED  =========================
+         ============================================================ -->
+
+    <section id="wrapped-menti">
+
+        <video id="wrapped-bg" autoplay muted loop>
+            <source src="backgroundweb.mp4" type="video/mp4">
+        </video>
+
+        <div class="menti-overlay"></div>
+
+        <div class="menti-inner">
+            <h1>Tuliskan Judul Lagu Sesuai Mood Kamu</h1>
+            <p>Playlist crowd-source yang akan tampil real-time.</p>
+
+            <div class="menti-row">
+
+                <!-- Left -->
+                <div class="menti-frame">
+                    <iframe 
+                      src="https://www.mentimeter.com/app/presentation/MENTI_PRESENTATION_ID/embed"
+                      allowfullscreen></iframe>
+                </div>
+
+                <!-- Right -->
+                <div class="menti-feed" id="liveFeed">
+                    <div class="feed-item">Sunflower — Rex Orange</div>
+                    <div class="feed-item">Lovely — Billie & Khalid</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============== JAVASCRIPT ============== -->
     <script>
-        /* Mood Messages */
         const messages = {
-            calm: [
-                "Take a deep breath.",
-                "Peace begins with one inhale.",
-                "You're allowed to rest."
-            ],
-            happy: [
-                "Keep shining!",
-                "Your smile changes the room.",
-                "Today is your day!"
-            ],
-            sad: [
-                "It's okay to feel this way.",
-                "Be gentle with yourself.",
-                "You’re not alone."
-            ],
-            angry: [
-                "Release it. Don’t hold it inside.",
-                "Your feelings are valid.",
-                "Breathe. Everything will pass."
-            ]
+            calm:["Take a deep breath.","Peace begins with one inhale.","You're allowed to rest."],
+            happy:["Keep shining!","Your smile changes the room.","Today is your day!"],
+            sad:["It's okay to feel this way.","Be gentle with yourself.","You’re not alone."],
+            angry:["Release it.","Your feelings are valid.","Everything will pass."]
         };
 
-        /* Pilih kartu → set mood */
-        function setMood(mood) {
+        function setMood(mood){
             document.getElementById("moodSelect").value = mood;
             playMusic(mood);
         }
 
-        /* PLAY MUSIC */
-        function playMusic(mood) {
-            const player = document.getElementById("player");
-            let playlistURL = "";
-
-            if (mood === "calm") {
-                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0";
-            } else if (mood === "sad") {
-                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1";
-            } else if (mood === "happy") {
-                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC";
-            } else if (mood === "angry") {
-                playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh";
-            }
-
-            player.innerHTML = `
-                <iframe style="border-radius:12px"
-                src="${playlistURL}" width="100%" height="380"
-                frameborder="0" allow="encrypted-media"></iframe>
-            `;
+        function playMusic(mood){
+            const urls = {
+                calm:"https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0",
+                sad:"https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1",
+                happy:"https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC",
+                angry:"https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh"
+            };
+            document.getElementById("player").innerHTML =
+                `<iframe style="border-radius:12px" src="${urls[mood]}" width="100%" height="380"></iframe>`;
         }
 
-        /* MOOD GENERATOR */
-        function generateMoodMessage() {
+        function generateMoodMessage(){
             const mood = document.getElementById("moodSelect").value;
             const box = document.getElementById("moodMessageBox");
             const ding = document.getElementById("dingSound");
 
-            const randomMsg = messages[mood][Math.floor(Math.random() * messages[mood].length)];
+            const msg = messages[mood][Math.floor(Math.random()*messages[mood].length)];
 
             box.classList.add("hidden");
-
-            setTimeout(() => {
-                box.innerHTML = randomMsg;
+            setTimeout(()=>{
+                box.innerHTML = msg;
                 box.classList.remove("hidden");
                 ding.play();
-            }, 350);
+            },350);
         }
     </script>
 
