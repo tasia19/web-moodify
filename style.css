@@ -8,6 +8,7 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    background: #000;
 }
 
 /* ==== BACKGROUND VIDEO ==== */
@@ -45,12 +46,12 @@ p {
 
 /* ==== PLAYLIST GRID ==== */
 .playlist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    display: flex;
+    justify-content: center;
     gap: 20px;
-    max-width: 900px;
-    margin: auto;
-    align-items: stretch;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 10px;
 }
 
 /* ==== CARD ==== */
@@ -58,11 +59,13 @@ p {
     border-radius: 16px;
     padding: 20px;
     cursor: pointer;
+    width: 220px;
     transition: 0.4s;
     backdrop-filter: blur(10px);
     color: #fff;
     animation: fadeUp 1s ease both;
     box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    flex-shrink: 0;
 }
 
 .card:hover {
@@ -191,6 +194,87 @@ p {
 @keyframes floatUp {
     0% { transform: translateY(0) scale(1); opacity: 1; }
     100% { transform: translateY(-80px) scale(0.2); opacity: 0; }
+}
+
+/* ============================================================
+   🔥 FULLSCREEN MENTIMETER SECTION (SPOTIFY WRAPPED STYLE)
+   ============================================================ */
+
+.menti-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    backdrop-filter: blur(8px);
+    background: linear-gradient(
+        135deg,
+        rgba(80, 60, 200, 0.45),
+        rgba(20, 20, 60, 0.45)
+    );
+    animation: fadeIn 1.5s ease;
+}
+
+/* Spotify-Wrapped glow rings */
+.menti-section::before,
+.menti-section::after {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(120,80,255,0.5), transparent 70%);
+    filter: blur(60px);
+    animation: pulseGlow 6s infinite alternate;
+}
+
+.menti-section::before {
+    top: -200px;
+    left: -150px;
+}
+
+.menti-section::after {
+    bottom: -200px;
+    right: -150px;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Title */
+.menti-title {
+    font-size: 2.6em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    animation: fadeUp 1s ease;
+}
+
+/* Menti iframe wrapper */
+.menti-box {
+    width: 90%;
+    max-width: 780px;
+    height: 420px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 28px rgba(0,0,0,0.3);
+    animation: fadeUp 1.3s ease;
+    overflow: hidden;
+}
+
+.menti-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 20px;
 }
 
 /* ==== ANIMATIONS ==== */
