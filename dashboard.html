@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard Crowd Playlist – Moodify</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg, #ffd6f6, #d9c7ff, #c6e6ff);
+        font-family: 'Poppins', sans-serif;
+        color: #333;
+        overflow-x: hidden;
+    }
+
+    header {
+        text-align: center;
+        padding: 25px;
+        font-size: 28px;
+        font-weight: 600;
+        color: #5e2d79;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .container {
+        width: 90%;
+        max-width: 900px;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    .song-card {
+        background: white;
+        padding: 18px 20px;
+        border-radius: 18px;
+        margin-bottom: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        animation: fadeIn 0.4s ease;
+    }
+
+    .info {
+        line-height: 1.5;
+        font-size: 16px;
+    }
+
+    .mood-tag {
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: capitalize;
+        color: white;
+    }
+
+    /* Warna mood */
+    .happy { background: #ffb84c; }
+    .calm { background: #88e6cd; }
+    .blue { background: #6ca8ff; }
+    .angry { background: #ff6b6b; }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(10px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+</style>
+</head>
+
+<body>
+
+<header>🎧 Crowd Playlist Dashboard – Moodify</header>
+
+<div class="container">
+    <div id="songList"></div>
+</div>
+
+<!-- FIREBASE + JS -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } 
+    from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDJYuLpI7flTzq44Rjuvp_-Uk-001fe4jM",
+        authDomain: "moodify-crowdplay.firebaseapp.com",
+        projectId: "moodify-crowdplay",
+        storageBucket: "moodify-crowdplay.firebasestorage.app",
+        messagingSenderId: "1017921695722",
+        appId: "1:1017921695722:web:d57678bef5930da17ccc93"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const songList = document.getElementById("songList");
+
+    // REALTIME LISTENER
+    const q = query(collection(db, "crowdPlaylist"), orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
+        songList.innerHTML = ""; // reset list tiap update
+
+        snapshot.forEach((doc) => {
+            const song = doc.data();
+
+            const card = `
+                <div class="song-card">
+                    <div class="info">
+                        <strong>${song.title}</strong><br>
+                        <span>${song.artist}</span>
+                    </div>
+                    <div class="mood-tag ${song.mood}">
+                        ${song.mood}
+                    </div>
+                </div>
+            `;
+
+            songList.innerHTML += card;
+        });
+    });
+</script>
+</body>
+</html>
