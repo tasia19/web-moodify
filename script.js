@@ -1,35 +1,47 @@
+/* ===============================
+      SET MOOD MAIN FUNCTION
+================================= */
 function setMood(mood) {
     showMoodMessage(mood);
     playMusic(mood);
     playDingSound();
     spawnParticles(mood);
+
+    // Set dropdown generator mengikuti kartu yang dipilih
+    const moodSelect = document.getElementById("moodChoice");
+    if (moodSelect) moodSelect.value = mood;
 }
 
-/* 🎶 PLAYLIST SESUAI MOOD */
+/* ===============================
+      SPOTIFY PLAYLIST PLAYER
+================================= */
 function playMusic(mood) {
     const player = document.getElementById("player");
     let playlistURL = "";
 
-    if (mood === "calm") {
-        playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0";
-    } 
-    else if (mood === "blue") {
-        playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1";
-    } 
-    else if (mood === "happy") {
-        playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC";
-    } 
-    else if (mood === "angry") {
-        playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh";
-    }
+    const playlist = {
+        calm: "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0",
+        sad: "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1",   // perbaikan dari 'blue'
+        happy: "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC",
+        angry: "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh",
+    };
+
+    playlistURL = playlist[mood];
 
     player.innerHTML = `
-        <iframe src="${playlistURL}" width="100%" height="380" frameborder="0"
-        allow="encrypted-media"></iframe>
+        <iframe 
+            src="${playlistURL}" 
+            width="100%" 
+            height="380" 
+            frameborder="0"
+            allow="encrypted-media">
+        </iframe>
     `;
 }
 
-/* 🔮 MOOD DECISION GENERATOR */
+/* ===============================
+      MOOD MESSAGE POP-UP
+================================= */
 function showMoodMessage(mood) {
     const messageBox = document.getElementById("mood-message");
 
@@ -39,7 +51,7 @@ function showMoodMessage(mood) {
             "You are safe. You are here.",
             "Slow down, everything is okay."
         ],
-        blue: [
+        sad: [
             "It's okay to feel sad 💙",
             "Be kind to yourself today.",
             "You are stronger than you think."
@@ -67,32 +79,34 @@ function showMoodMessage(mood) {
     }, 4000);
 }
 
-/* 🔔 SUARA 'DING' */
+/* ===============================
+          DING SOUND
+================================= */
 function playDingSound() {
     const audio = new Audio("ding.mp3");
     audio.volume = 0.4;
     audio.play();
 }
 
-/* ✨ PARTICLE ANIMATION */
+/* ===============================
+        PARTICLE ANIMATION
+================================= */
 function spawnParticles(mood) {
     const colors = {
         calm: "#98e6d8",
-        blue: "#6bb6ff",
+        sad: "#6bb6ff",
         happy: "#ffe066",
         angry: "#ff5959"
     };
 
-    const container = document.body;
-
     for (let i = 0; i < 20; i++) {
-        let particle = document.createElement("div");
+        const particle = document.createElement("div");
         particle.classList.add("particle");
         particle.style.background = colors[mood];
         particle.style.left = Math.random() * 100 + "vw";
         particle.style.animationDuration = 1 + Math.random() * 1 + "s";
 
-        container.appendChild(particle);
+        document.body.appendChild(particle);
 
         setTimeout(() => {
             particle.remove();
