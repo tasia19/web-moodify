@@ -1,346 +1,365 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moodify | Bilik Rasa</title>
+<meta charset="UTF-8">
+<title>Moodify – Mood Based Playlist & Mood Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: "Poppins", sans-serif;
-            text-align: center;
-            color: white;
-        }
+<!-- GOOGLE FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        /* Background Video */
-        #bg-video {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            filter: brightness(60%);
-        }
+<style>
+/* ==== BASIC PAGE STYLE ==== */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    background: #000;
+    overflow-x: hidden;
+}
 
-        .container {
-            padding: 60px 20px;
-            max-width: 1300px;
-            margin: auto;
-        }
+/* ==== BACKGROUND VIDEO ==== */
+#bg-video {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(55%) blur(3px);
+}
 
-        /* === GRID CARD 4 KOLOM === */
-        .playlist-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-top: 40px;
-        }
+/* ==== CONTAINER ==== */
+.container {
+    padding: 80px 20px;
+    max-width: 1300px;
+    margin: auto;
+    animation: fadeIn 1.4s ease-in-out;
+    text-align: center;
+}
 
-        /* RESPONSIVE */
-        @media (max-width: 1100px) {
-            .playlist-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 600px) {
-            .playlist-grid { grid-template-columns: 1fr; }
-        }
+/* ==== HEADER ==== */
+h1 {
+    font-size: 3.2rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-shadow: 0 3px 14px rgba(0,0,0,0.55);
+}
 
-        /* === CARD === */
-        .card {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 25px;
-            border-radius: 18px;
-            backdrop-filter: blur(10px);
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .card:hover {
-            transform: translateY(-8px) scale(1.03);
-        }
-        .card img {
-            width: 100%;
-            height: 150px;
-            object-fit: contain;
-        }
-        .card h3 {
-            margin-top: 15px;
-            font-size: 1.2em;
-        }
+p {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    max-width: 650px;
+    margin: 0 auto 45px;
+}
 
-        /* === CARD COLORS === */
-        .calm { background: rgba(120,200,180,0.25); }
-        .sad { background: rgba(130,150,230,0.28); }
-        .happy { background: rgba(255,200,150,0.28); }
-        .angry { background: rgba(230,100,90,0.32); }
+/* ==== PLAYLIST GRID ==== */
+.playlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 28px;
+    max-width: 1000px;
+    margin: auto;
+}
 
-        /* Mood Box */
-        .mood-box {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 12px;
-            backdrop-filter: blur(5px);
-            font-size: 1.3em;
-            transition: 0.4s;
-        }
+/* ==== CARD ==== */
+.card {
+    border-radius: 18px;
+    padding: 22px;
+    cursor: pointer;
+    transition: 0.45s;
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.35);
+    animation: fadeUp 1s ease both;
+    position: relative;
+}
 
-        .hidden {
-            opacity: 0;
-            transform: translateY(10px);
-        }
+/* GLOW/SINAR */
+.card::before {
+    content: "";
+    position: absolute;
+    top: -4px; left: -4px; right: -4px; bottom: -4px;
+    border-radius: 20px;
+    background: linear-gradient(90deg,
+        rgba(255,255,255,0.2),
+        rgba(255,255,255,0.05),
+        rgba(255,255,255,0.2)
+    );
+    opacity: 0;
+    transition: 0.4s;
+    filter: blur(12px);
+}
 
-        #player {
-            margin-top: 40px;
-        }
+.card:hover::before {
+    opacity: 1;
+}
 
-        /* === HORIZONTAL SONG INPUT CARD === */
-        .add-song-card {
-            background: rgba(255, 255, 255, 0.18);
-            padding: 25px;
-            border-radius: 18px;
-            margin: 40px auto;
-            backdrop-filter: blur(10px);
-            color: #fff;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            max-width: 1000px;
-            animation: fadeIn .6s ease;
-        }
+.card:hover {
+    transform: translateY(-10px) scale(1.05);
+}
 
-        .add-song-card h2 {
-            font-weight: 600;
-            margin-bottom: 18px;
-        }
+/* CARD IMAGE */
+.card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 12px;
+}
 
-        .input-row {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
+/* CARD TITLE */
+.card h3 {
+    margin: 12px 0 6px;
+    font-size: 1.25rem;
+}
 
-        .input-row input,
-        .input-row select {
-            padding: 12px 14px;
-            border-radius: 12px;
-            border: none;
-            width: 25%;
-            font-size: 1em;
-            outline: none;
-        }
+/* ==== CARD COLORS (Pastel Glass) ==== */
+.card.calm {
+    background: linear-gradient(145deg, rgba(160,230,210,0.35), rgba(100,190,170,0.25));
+}
 
-        .input-row button {
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #ff9de2, #d8b4ff, #9edcff);
-            border: none;
-            border-radius: 12px;
-            color: #4a2e5c;
-            font-weight: bold;
-            cursor: pointer;
-            transition: .3s;
-        }
+.card.sad {
+    background: linear-gradient(145deg, rgba(130,150,255,0.35), rgba(90,80,210,0.25));
+}
 
-        .input-row button:hover { transform: scale(1.05); }
+.card.happy {
+    background: linear-gradient(145deg, rgba(255,230,150,0.35), rgba(255,180,190,0.25));
+}
 
-        .mini-note {
-            margin-top: 10px;
-            font-size: .85em;
-            opacity: .9;
-        }
+.card.angry {
+    background: linear-gradient(145deg, rgba(255,120,110,0.4), rgba(255,80,80,0.25));
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+/* ==== SPOTIFY PLAYER (WITH SHIMMER) ==== */
+#player-wrapper {
+    max-width: 480px;
+    margin: 50px auto 20px;
+    position: relative;
+}
 
-        @media (max-width: 780px) {
-            .input-row { flex-direction: column; }
-            .input-row input,
-            .input-row select,
-            .input-row button { width: 100%; }
-        }
-    </style>
+#player {
+    width: 100%;
+    display: none;
+}
+
+/* LOADING SHIMMER */
+.shimmer {
+    height: 152px;
+    width: 100%;
+    border-radius: 14px;
+    background: #333;
+    overflow: hidden;
+    position: relative;
+}
+
+.shimmer::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+    animation: shimmerMove 1.5s infinite;
+}
+
+@keyframes shimmerMove {
+    100% { left: 100%; }
+}
+
+/* ==== MOOD GENERATOR (IMESSAGE BUBBLE STYLE) ==== */
+.mood-generator {
+    margin-top: 70px;
+    padding: 25px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 22px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    backdrop-filter: blur(16px);
+}
+
+.mood-generator select,
+.mood-generator button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.mood-generator button {
+    background: #a085ff;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.mood-generator button:hover {
+    background: #8e72ff;
+}
+
+/* iMessage bubble */
+.mood-bubble {
+    display: inline-block;
+    background: #ffffffcc;
+    color: #000;
+    padding: 15px 18px;
+    margin-top: 15px;
+    border-radius: 18px 18px 18px 6px;
+    max-width: 75%;
+    font-weight: 600;
+    animation: fadeUp 0.6s ease-out;
+}
+
+/* ==== PARTICLES ==== */
+#particleContainer {
+    position: relative;
+    height: 0;
+    overflow: visible;
+}
+
+.particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: white;
+    opacity: 0.8;
+    border-radius: 50%;
+    animation: floatUp 1.6s ease-out forwards;
+}
+
+/* ==== ANIMATIONS ==== */
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-85px) scale(0.3); opacity: 0; }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
 
 <body>
 
-    <!-- Background Video -->
-    <video autoplay muted loop id="bg-video">
-        <source src="backgroundweb.mp4" type="video/mp4">
-        Browser tidak mendukung video.
-    </video>
+<!-- BACKGROUND VIDEO -->
+<video autoplay muted loop id="bg-video">
+    <source src="yourvideo.mp4" type="video/mp4">
+</video>
 
-    <div class="container">
-        <h1>🎧 Moodify</h1>
-        <p>Pilih suasana hatimu, dan dengarkan playlist yang menenangkan jiwamu.</p>
+<div class="container">
+    <h1>Moodify</h1>
+    <p>Pilih moodmu → dengarkan playlist → dan dapatkan pesan mood versi iMessage!</p>
 
-        <!-- KARTU HORIZONTAL TAMBAH LAGU -->
-        <div class="add-song-card">
-            <h2>🎶 Tambahkan Lagu Sesuai Mood Kamu</h2>
-
-            <div class="input-row">
-                <input id="songTitle" type="text" placeholder="Judul Lagu">
-                <input id="songArtist" type="text" placeholder="Nama Artis">
-
-                <select id="songMood">
-                    <option value="calm">🌿 Calm</option>
-                    <option value="happy">🌈 Happy</option>
-                    <option value="blue">💧 Sad</option>
-                    <option value="angry">🔥 Angry</option>
-                </select>
-
-                <button onclick="submitSong()">Kirim</button>
-            </div>
-
-            <p class="mini-note">✨ Lagu kamu akan langsung tampil di dashboard real-time</p>
-            
-            <div class="goto-dashboard">
-                <a href="dashboard.html" target="_blank">📊 Lihat Crowd Playlist (Real-Time)</a>
-</div>
-
+    <!-- PLAYLIST GRID -->
+    <div class="playlist-grid">
+        <div class="card calm" onclick="loadPlaylist('calm')">
+            <img src="calm.jpg">
+            <h3>Calm</h3>
+            <p>Tenang, damai, rileks.</p>
         </div>
 
-        <!-- PLAYLIST GRID -->
-        <div class="playlist-grid">
-
-            <div class="card calm" onclick="setMood('calm')">
-                <img src="calm.png" alt="Calm Mood">
-                <h3>🌿 Calm Mood</h3>
-                <p>Musik lembut untuk meredakan pikiran.</p>
-            </div>
-
-            <div class="card sad" onclick="setMood('sad')">
-                <img src="blue.png" alt="Feeling Blue">
-                <h3>💧 Feeling Blue</h3>
-                <p>Irama lembut yang menemani suasana hati sendu.</p>
-            </div>
-
-            <div class="card happy" onclick="setMood('happy')">
-                <img src="happy.png" alt="Happy Mood">
-                <h3>🌈 Happy Mood</h3>
-                <p>Vibes ceria untuk meningkatkan mood!</p>
-            </div>
-
-            <div class="card angry" onclick="setMood('angry')">
-                <img src="angry.png" alt="Angry Energy">
-                <h3>🔥 Angry Energy</h3>
-                <p>Musik penuh energi untuk menyalurkan kemarahan.</p>
-            </div>
-
+        <div class="card sad" onclick="loadPlaylist('sad')">
+            <img src="sad.jpg">
+            <h3>Sad</h3>
+            <p>Harap, sendu, reflektif.</p>
         </div>
 
-        <!-- PLAYER -->
-        <div id="player"></div>
-
-        <!-- GENERATOR -->
-        <div class="mood-generator">
-            <h2>🔮 Mood Decision Generator</h2>
-            <p>Pilih mood kamu → klik tombol → dapatkan pesan khusus ✨</p>
-
-            <select id="moodSelect">
-                <option value="calm">🌿 Calm</option>
-                <option value="happy">🌈 Happy</option>
-                <option value="sad">😢 Blue</option>
-                <option value="angry">🔥 Angry</option>
-            </select>
-
-            <button onclick="generateMoodMessage()">Dapatkan Pesan</button>
-
-            <div id="moodMessageBox" class="mood-box hidden"></div>
-
-            <audio id="dingSound" src="ding.mp3" preload="auto"></audio>
+        <div class="card happy" onclick="loadPlaylist('happy')">
+            <img src="happy.jpg">
+            <h3>Happy</h3>
+            <p>Semangat, bahagia.</p>
         </div>
 
+        <div class="card angry" onclick="loadPlaylist('angry')">
+            <img src="angry.jpg">
+            <h3>Angry</h3>
+            <p>Intense, kuat, ekspresif.</p>
+        </div>
     </div>
 
-    <!-- JAVASCRIPT -->
-    <script>
-        /* Pesan Mood */
-        const messages = {
-            calm: ["Tenang itu bukan lemah, tapi bentuk kekuatan. Kamu hebat 🤍", "Ketenanganmu hari ini membuat segalanya terasa lebih ringan."],
-            happy: ["Kamu terlihat ceria hari ini! 😊 Semoga energi baikmu menular ke semua hal yang kamu lakukan!", "Hari ini penuh warna! Terus sebarkan kebaikan ya ✨"],
-            sad: [ "Tidak apa-apa merasa sedih. Istirahat sebentar, kamu tidak sendirian 💙", "Perasaanmu valid. Pelan-pelan ya, kamu akan baik-baik saja."],
-            angry: [ "Tarik napas sebentar… kamu butuh ruang untuk diri sendiri. Kamu kuat ❤️‍🔥", "Emosi itu wajar. Yang penting kamu tidak memendam semuanya sendirian."]
-        };
+    <!-- SPOTIFY PLAYER -->
+    <div id="player-wrapper">
+        <div class="shimmer" id="loadingShimmer"></div>
+        <iframe id="player" allow="encrypted-media"></iframe>
+    </div>
 
-        function setMood(mood) {
-            document.getElementById("moodSelect").value = mood;
-            playMusic(mood);
-        }
+    <!-- IMESSAGE MOOD -->
+    <div class="mood-generator">
+        <select id="moodSelect">
+            <option value="">Pilih Mood</option>
+            <option value="calm">Calm</option>
+            <option value="sad">Sad</option>
+            <option value="happy">Happy</option>
+            <option value="angry">Angry</option>
+        </select>
+        <button onclick="generateMood()">Tampilkan Pesan Mood</button>
+        <div id="moodMessage"></div>
+    </div>
 
-        function playMusic(mood) {
-            const player = document.getElementById("player");
-            let playlistURL = "";
+    <div id="particleContainer"></div>
+</div>
 
-            if (mood === "calm") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0";
-            if (mood === "sad") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1";
-            if (mood === "happy") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC";
-            if (mood === "angry") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh";
+<script>
+/* PLAYLIST DATA */
+const playlists = {
+    calm: "https://open.spotify.com/embed/playlist/xxxxxxxx",
+    sad: "https://open.spotify.com/embed/playlist/yyyyyyyy",
+    happy: "https://open.spotify.com/embed/playlist/zzzzzzzz",
+    angry: "https://open.spotify.com/embed/playlist/wwwwwwww"
+};
 
-            player.innerHTML = `
-                <iframe style="border-radius:12px"
-                src="${playlistURL}" width="100%" height="380"
-                frameborder="0" allow="encrypted-media"></iframe>`;
-        }
+/* LOAD PLAYLIST WITH SHIMMER */
+function loadPlaylist(mood) {
+    const player = document.getElementById("player");
+    const shimmer = document.getElementById("loadingShimmer");
 
-        function generateMoodMessage() {
-            const mood = document.getElementById("moodSelect").value;
-            const box = document.getElementById("moodMessageBox");
-            const ding = document.getElementById("dingSound");
+    shimmer.style.display = "block";
+    player.style.display = "none";
 
-            const randomMsg = messages[mood][Math.floor(Math.random() * messages[mood].length)];
+    setTimeout(() => {
+        player.src = playlists[mood];
+        shimmer.style.display = "none";
+        player.style.display = "block";
+    }, 1200);
+}
 
-            box.classList.add("hidden");
-            setTimeout(() => {
-                box.innerHTML = randomMsg;
-                box.classList.remove("hidden");
-                ding.play();
-            }, 350);
-        }
-    </script>
+/* MOOD MESSAGES (BAHASA INDONESIA) */
+const moodText = {
+    calm: "Kamu lagi butuh ketenangan ya? Tarik napas pelan-pelan, semuanya aman kok.",
+    sad: "Tidak apa-apa merasa sedih. Kamu kuat, dan perasaan ini tidak akan selamanya.",
+    happy: "Kamu lagi bersinar! Teruskan energi positif ini.",
+    angry: "Marah itu wajar. Yang penting kamu tetap bisa mengontrol langkahmu selanjutnya."
+};
 
-    <!-- FIREBASE SCRIPT -->
-    <script type="module">
-        import { initializeApp } 
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+function generateMood() {
+    const mood = document.getElementById("moodSelect").value;
+    const box = document.getElementById("moodMessage");
 
-        import { getFirestore, collection, addDoc } 
-            from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    if (!mood) return;
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDJYuLpI7flTzq44Rjuvp_-Uk-001fe4jM",
-            authDomain: "moodify-crowdplay.firebaseapp.com",
-            projectId: "moodify-crowdplay",
-            storageBucket: "moodify-crowdplay.firebasestorage.app",
-            messagingSenderId: "1017921695722",
-            appId: "1:1017921695722:web:d57678bef5930da17ccc93"
-        };
+    box.innerHTML = `<div class='mood-bubble'>${moodText[mood]}</div>`;
+    spawnParticles();
+}
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+/* PARTICLE FUN */
+function spawnParticles() {
+    for (let i = 0; i < 5; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        p.style.left = (50 + (Math.random() * 100 - 50)) + "%";
+        document.getElementById("particleContainer").appendChild(p);
 
-        window.submitSong = async function () {
-            const title = document.getElementById("songTitle").value.trim();
-            const artist = document.getElementById("songArtist").value.trim();
-            const mood = document.getElementById("songMood").value;
-
-            if (!title || !artist) {
-                alert("Mohon isi judul lagu dan artis.");
-                return;
-            }
-
-            await addDoc(collection(db, "playlist"), {
-                title: title,
-                artist: artist,
-                mood: mood,
-                time: Date.now()
-            });
-
-            document.getElementById("songTitle").value = "";
-            document.getElementById("songArtist").value = "";
-
-            alert("Lagu berhasil ditambahkan!");
-        };
-    </script>
+        setTimeout(() => p.remove(), 1600);
+    }
+}
+</script>
 
 </body>
 </html>
