@@ -245,6 +245,10 @@
 
             <button onclick="generateMoodMessage()">Dapatkan Pesan</button>
 
+            <button id="generateButton">
+
+            <div id="bubbleContainer"></div>
+
             <div id="moodMessageBox" class="mood-box hidden"></div>
 
             <audio id="dingSound" src="ding.mp3" preload="auto"></audio>
@@ -256,10 +260,10 @@
     <script>
         /* Pesan Mood */
         const messages = {
-            calm: ["Take a deep breath.", "Peace begins with one inhale.", "You're allowed to rest."],
-            happy: ["Keep shining!", "Your smile changes the room.", "Today is your day!"],
-            sad: ["It's okay to feel this way.", "Be gentle with yourself.", "You’re not alone."],
-            angry: ["Release it.", "Your feelings are valid.", "Breathe. Everything will pass."]
+            calm: ["Tenang itu bukan lemah, tapi bentuk kekuatan. Kamu hebat 🤍", "Ketenanganmu hari ini membuat segalanya terasa lebih ringan."],
+            happy: ["Kamu terlihat ceria hari ini! 😊 Semoga energi baikmu menular ke semua hal yang kamu lakukan!", "Hari ini penuh warna! Terus sebarkan kebaikan ya ✨"],
+            sad: [ "Tidak apa-apa merasa sedih. Istirahat sebentar, kamu tidak sendirian 💙", "Perasaanmu valid. Pelan-pelan ya, kamu akan baik-baik saja."],
+            angry: [ "Tarik napas sebentar… kamu butuh ruang untuk diri sendiri. Kamu kuat ❤️‍🔥", "Emosi itu wajar. Yang penting kamu tidak memendam semuanya sendirian."]
         };
 
         function setMood(mood) {
@@ -273,7 +277,7 @@
 
             if (mood === "calm") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0";
             if (mood === "sad") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1";
-            if (mood === "happy") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC";
+            if (mood === "happy") playlistURL = "<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/03TzzlaEIYCD8FXo42VgpF?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>";
             if (mood === "angry") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh";
 
             player.innerHTML = `
