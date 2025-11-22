@@ -245,10 +245,6 @@
 
             <button onclick="generateMoodMessage()">Dapatkan Pesan</button>
 
-            <button id="generateButton">
-
-            <div id="bubbleContainer"></div>
-
             <div id="moodMessageBox" class="mood-box hidden"></div>
 
             <audio id="dingSound" src="ding.mp3" preload="auto"></audio>
@@ -277,7 +273,7 @@
 
             if (mood === "calm") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX3rxVfibe1L0";
             if (mood === "sad") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX7qK8ma5wgG1";
-            if (mood === "happy") playlistURL = "<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/03TzzlaEIYCD8FXo42VgpF?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>";
+            if (mood === "happy") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DXdPec7aLTmlC";
             if (mood === "angry") playlistURL = "https://open.spotify.com/embed/playlist/37i9dQZF1DX70RN3TfWWJh";
 
             player.innerHTML = `
